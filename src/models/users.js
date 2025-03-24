@@ -1,6 +1,36 @@
 const db = require("../config/db")
+const passwordHash = require('password-hash')
+
+const SearchUser = (u_email,u_senha)=>{
+
+    const sql = `
+    SELECT EMAIL, NOME
+    FROM
+    USERS
+    WHERE
+    EMAIL = ?
+    `
+    db.query(sql,[u_email],(error, results)=>{
+        if(error){
+            console.log("Usuario não existe")
+            return
+        }
+        if(passwordHash.verify(u_senha,results[0].SENHA)){
+            console.log("Usuario encontrado")
+            const userPayload = {
+                email: results[0].EMAIL,
+                name: results[0].NOME
+            };      
+            return userPayload
+        }else{
+            console.log("Usuario não existe")
+            return
+        }
+    })
+}
 
 const InsertUser = (u_name,u_email,u_cpf,u_data_nasc,u_senha,u_treino) => {
+    let password = passwordHash.generate(u_senha)
     const sql = `
         INSERT INTO USERS(
             NOME,
@@ -19,7 +49,7 @@ const InsertUser = (u_name,u_email,u_cpf,u_data_nasc,u_senha,u_treino) => {
             ?
         )
     `
-    db.query(sql,[u_name, u_email, u_cpf, u_data_nasc, u_senha, u_treino], (error, results)=>{
+    db.query(sql,[u_name, u_email, u_cpf, u_data_nasc, password, u_treino], (error, results)=>{
         if(error){
             console.log("Erro ao inserir usuario: "+error)
             return
@@ -81,4 +111,11 @@ const DeleteUser = (u_id)=>{
         console.log("Usuario deletado com sucesso")
     })
 
+}
+
+module.exports = {
+    SearchUser,
+    InsertUser,
+    UpdateUser,
+    DeleteUser
 }

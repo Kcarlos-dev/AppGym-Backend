@@ -2,9 +2,12 @@ require('dotenv').config({ path: '../.env' })
 
 const db = require('./config/db')
 const tbUser = require('./migrations/users')
+const authRoutes = require('./routes/AuthRoutes')
 const express = require('express')
 const app = express()
 const port = 3000
+
+app.use('/login',authRoutes)
 
 app.get('/',(req,res)=>{
     res.send('Hello World')
