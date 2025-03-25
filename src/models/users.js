@@ -2,11 +2,31 @@ require('dotenv').config({ path: '../.env' })
 const db = require("../config/db")
 const passwordHash = require('password-hash')
 
+const TrainingUser = (id,u_email)=>{
+    return new Promise((resolve,reject)=>{
+        const sql =`
+        SELECT TREINO
+        FROM
+        USERS
+        WHERE
+        1=1
+        AND ID_USER = ?
+        AND EMAIL = ?
+        `
+        db.query(sql,[id,u_email],(error, results)=>{
+            if(error){
+                reject("Erro ao buscar treino: "+error)
+            }
+            resolve(results[0])
+        })
+    })
+}
+
 const SearchUser = (u_email,u_senha)=>{
     return new Promise((resolve, reject) => {
         const sql = `
         SELECT 
-        EMAIL, NOME, SENHA
+        ID_USER,EMAIL, NOME, SENHA
         FROM
         USERS
         WHERE
@@ -19,8 +39,10 @@ const SearchUser = (u_email,u_senha)=>{
             if(passwordHash.verify(u_senha,results[0].SENHA)){
                 console.log("Usuario encontrado")
                 const userPayload = {
+                    id:results[0].ID_USER,
                     email: results[0].EMAIL,
-                    name: results[0].NOME
+                    name: results[0].NOME,
+                    exists:true
                 }     
                 resolve(userPayload)
                  
@@ -64,6 +86,7 @@ const InsertUser = (u_name,u_email,u_cpf,u_data_nasc,u_senha,u_treino) => {
 
 const UpdateUser = (alter,u_id,u_nome,u_senha) => {
     return new Promise((resolve, reject) => {
+        let password = passwordHash.generate(u_senha)
         let sql = ""
         if(alter === "nome"){
             sql = `
@@ -73,7 +96,7 @@ const UpdateUser = (alter,u_id,u_nome,u_senha) => {
                 WHERE
                 ID_USER = ?        
             `
-            db.query(sql,[u_id,u_nome],(error)=>{
+            db.query(sql,[u_nome,u_id],(error)=>{
                 if(error){
                     reject("Erro ao alterar nome: "+error)
                 }
@@ -88,7 +111,7 @@ const UpdateUser = (alter,u_id,u_nome,u_senha) => {
                 WHERE
                 ID_USER = ?
             `
-            db.query(sql,[u_id,u_senha],(error)=>{
+            db.query(sql,[password,u_id],(error)=>{
                 if(error){
                     reject("Erro ao alterar senha: "+error)      
                 }
@@ -120,6 +143,7 @@ const DeleteUser = (u_id)=>{
 }
 
 module.exports = {
+    TrainingUser,
     SearchUser,
     InsertUser,
     UpdateUser,
