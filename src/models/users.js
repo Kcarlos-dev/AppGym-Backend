@@ -26,7 +26,7 @@ const SearchUser = (u_email,u_senha)=>{
     return new Promise((resolve, reject) => {
         const sql = `
         SELECT 
-        ID_USER,EMAIL, NOME, SENHA
+        *
         FROM
         USERS
         WHERE
@@ -41,6 +41,7 @@ const SearchUser = (u_email,u_senha)=>{
                 const userPayload = {
                     id:results[0].ID_USER,
                     email: results[0].EMAIL,
+                    treino: results[0].TREINO,
                     name: results[0].NOME,
                     exists:true
                 }     
