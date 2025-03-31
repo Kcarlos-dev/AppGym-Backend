@@ -85,40 +85,60 @@ const InsertUser = (u_name,u_email,u_cpf,u_data_nasc,u_senha,u_treino) => {
     })
 }
 
-const UpdateUser = (alter,u_id,u_nome,u_senha) => {
+const UpdateUser = (alter,u_id,u_nome,u_senha,u_senha_new) => {
     return new Promise((resolve, reject) => {
-        let password = passwordHash.generate(u_senha)
-        let sql = ""
-        if(alter === "nome"){
-            sql = `
-                UPDATE USERS
-                SET
-                NOME = ?
-                WHERE
-                ID_USER = ?        
-            `
-            db.query(sql,[u_nome,u_id],(error)=>{
-                if(error){
-                    reject("Erro ao alterar nome: "+error)
+        const sqlSenha = `
+        SELECT 
+        SENHA
+        FROM
+        USERS
+        WHERE
+        ID_USER = ?
+        `
+        db.query(sqlSenha,[u_id],(error, results)=>{
+            if(error){
+               reject("Erro ao achar usuario: "+error)
+            }
+            if(passwordHash.verify(u_senha,results[0].SENHA)){
+                let password = passwordHash.generate(u_senha_new)
+                let sql = ""
+                if(alter === "nome"){
+                    sql = `
+                        UPDATE USERS
+                        SET
+                        NOME = ?
+                        WHERE
+                        ID_USER = ?        
+                    `
+                    db.query(sql,[u_nome,u_id],(error)=>{
+                        if(error){
+                            reject("Erro ao alterar nome: "+error)
+                        }
+                        resolve("Nome alterado com sucesso")
+                    })
                 }
-                resolve("Nome alterado com sucesso")
-            })
-        }
-        if(alter === "password"){
-            sql = `
-                UPDATE USERS
-                SET
-                SENHA = ?
-                WHERE
-                ID_USER = ?
-            `
-            db.query(sql,[password,u_id],(error)=>{
-                if(error){
-                    reject("Erro ao alterar senha: "+error)      
+                if(alter === "password"){
+                    sql = `
+                        UPDATE USERS
+                        SET
+                        SENHA = ?
+                        WHERE
+                        ID_USER = ?
+                    `
+                    db.query(sql,[password,u_id],(error)=>{
+                        if(error){
+                            reject("Erro ao alterar senha: "+error)      
+                        }
+                        resolve("Senha alterada com sucesso")
+                    })
                 }
-                resolve("Senha alterada com sucesso")
-            })
-        }
+                     
+            }else{
+                reject("Senha atual errada: ")
+            }
+        })
+    
+
 
     })
 
