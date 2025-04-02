@@ -10,7 +10,7 @@ const CreateTb = ()=>{
     CPF VARCHAR(20),
     DATA_NASC DATE,
     SENHA VARCHAR(255),
-    TREINO VARCHAR(255)
+    TREINO JSON
     )
     `
     
