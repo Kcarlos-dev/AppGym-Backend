@@ -36,6 +36,9 @@ const SearchUser = (u_email,u_senha)=>{
             if(error){
                reject("Erro ao procurar no banco: "+error)
             }
+            if (results.length === 0) {
+                return reject("Usuário não encontrado")
+            }
             if(passwordHash.verify(u_senha,results[0].SENHA)){
                 console.log("Usuario encontrado")
                 const userPayload = {
