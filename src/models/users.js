@@ -46,6 +46,7 @@ const SearchUser = (u_email,u_senha)=>{
                     email: results[0].EMAIL,
                     treino: results[0].TREINO,
                     name: results[0].NOME,
+                    tipo:results[0].TIPO_USER,
                     exists:true
                 }     
                 resolve(userPayload)

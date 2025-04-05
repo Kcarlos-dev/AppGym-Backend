@@ -2,6 +2,7 @@ require('dotenv').config({ path: '../.env' })
 
 const db = require('./config/db')
 const tbUser = require('./migrations/users')
+const SeedAdm = require('./seed/adm')
 const authRoutes = require('./routes/AuthRoutes')
 const userController = require('./routes/UserRoutes')
 const express = require('express')
