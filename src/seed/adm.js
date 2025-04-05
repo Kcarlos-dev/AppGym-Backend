@@ -13,6 +13,7 @@ const CreateAdm = ()=>{
                     CPF,
                     DATA_NASC,
                     SENHA,
+                    TIPO_USER,
                     TREINO
                 )
                 VALUES(
@@ -22,10 +23,11 @@ const CreateAdm = ()=>{
                     ?,
                     ?,
                     ?,
+                    ?,
                     ?
                 )
             `
-            db.query(sql,[1,"Adm", "adm@adm.com", "0", "2000-01-11", password, '{"teste":"teste"}'], (error, results)=>{
+            db.query(sql,[1,"Adm", "adm@adm.com", "0", "2000-01-11", password,"adm", '{"teste":"teste"}'], (error, results)=>{
                 if (error) {
                     if (error.code === 'ER_DUP_ENTRY') {
                         console.log('Usuário 01 já existe');
