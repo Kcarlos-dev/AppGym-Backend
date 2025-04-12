@@ -2,9 +2,11 @@ require('dotenv').config({ path: '../.env' })
 
 const db = require('./config/db')
 const tbUser = require('./migrations/users')
+const tbExercicios = require('./migrations/exercicios')
 const SeedAdm = require('./seed/adm')
 const authRoutes = require('./routes/AuthRoutes')
-const userController = require('./routes/UserRoutes')
+const userRoutes = require('./routes/UserRoutes')
+const admRoutes  = require('./routes/AdmRoutes')
 const express = require('express')
 const cors = require('cors')
 const app = express()
@@ -15,7 +17,8 @@ app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
 app.use('/login',authRoutes)
-app.use('/user',userController)
+app.use('/user',userRoutes)
+app.use('/adm',admRoutes)
 
 app.get('/',(req,res)=>{
     res.send('Hello World')
