@@ -92,7 +92,7 @@ const InsertUser = (u_name,u_email,u_cpf,u_data_nasc,u_senha,u_treino) => {
 const UpdateTreino = (treino,email)=>{
     return new Promise((resolve,reject)=>{
         sql = `
-        UPDATE USER
+        UPDATE USERS
         SET
         TREINO = ?
         WHERE
