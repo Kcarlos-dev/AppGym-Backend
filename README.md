@@ -32,6 +32,8 @@ Este projeto fornece a estrutura de backend para uma aplicação de gestão de a
 
 ## 📦 Instalação
 
+> 💡 **Pré-requisitos**: Certifique-se de ter o **MySQL** rodando e configurado com os dados definidos no arquivo `.env`.
+
 1. **Clone o repositório**
    ```bash
    git clone https://github.com/Kcarlos-dev/AppGym-Backend.git
@@ -57,7 +59,7 @@ Este projeto fornece a estrutura de backend para uma aplicação de gestão de a
 
 4. **Execute o servidor**
    ```bash
-   npm run dev
+   nodemon app.js
    ```
 
    O servidor deve rodar em: [http://localhost:3000](http://localhost:3000)
@@ -131,7 +133,11 @@ src/
 
 ---
 
+## 📄 Licença
 
+Este projeto está licenciado sob a **MIT License** — veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+
+---
 
 ## 👨‍💻 Autor
 
