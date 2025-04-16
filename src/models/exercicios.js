@@ -16,7 +16,7 @@ const SelectExercicios = () => {
                 return reject("Não existe treino registrado")
 
             }
-            resolve(results[0])
+            resolve(results)
         })
     })
 }
@@ -42,6 +42,7 @@ const UpdateExercicios = (id,file)=>{
 
 const InsertExercicios = (tipo, exercicio, musculos) => {
     return new Promise((resolve, reject) => {
+     
         const sql = `
             INSERT INTO EXERCICIOS(
                 TIPO,
@@ -50,15 +51,15 @@ const InsertExercicios = (tipo, exercicio, musculos) => {
             )VALUES(
                 ?,
                 ?,
-                ?,
+                ?
             )
         `
-        db.query(sql, [tipo, exercicio, musculos], (error) => {
+        db.query(sql, [tipo, exercicio,`"${musculos}"`], (error,results) => {
             if (error) {
                 return reject("ERRO ao cadastrar Exercicio: " + error)
 
             }
-            return resolve("Exercicio cadastrado com sucesso")
+            return resolve({msg:"Maquina cadastrada com Sucesso",id:results.insertId})
         })
     })
 }

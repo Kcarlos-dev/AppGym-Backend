@@ -89,6 +89,24 @@ const InsertUser = (u_name,u_email,u_cpf,u_data_nasc,u_senha,u_treino) => {
     })
 }
 
+const UpdateTreino = (treino,email)=>{
+    return new Promise((resolve,reject)=>{
+        sql = `
+        UPDATE USER
+        SET
+        TREINO = ?
+        WHERE
+        EMAIL  = ?
+        `
+        db.query(sql,[`"${treino}"`,email],(error)=>{
+            if (error) {
+                reject("Erro ao alterar treino: " + error)
+            }
+            resolve("Treino alterado com sucesso")
+        })
+    })
+} 
+
 const UpdateAdm = (u_nome,u_email,u_cpf,u_data_nasc,u_senha,u_id)=>{
     return new Promise((resolve,reject)=>{
         let password = passwordHash.generate(u_senha)
@@ -106,7 +124,6 @@ const UpdateAdm = (u_nome,u_email,u_cpf,u_data_nasc,u_senha,u_id)=>{
             db.query(sql, [u_nome,u_email,u_cpf,u_data_nasc,password,u_id ], (error) => {
                 if (error) {
                     reject("Erro ao alterar user: " + error)
-                    console.log(u_id)
                 }
                 resolve("User alterado com sucesso")
             })
@@ -199,5 +216,6 @@ module.exports = {
     InsertUser,
     UpdateUser,
     DeleteUser,
-    UpdateAdm
+    UpdateAdm,
+    UpdateTreino
 }
